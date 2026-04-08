@@ -1,8 +1,8 @@
-[08.04.2026 18:08] сид вишес: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>квест</title>
     <style>
         :root {
@@ -18,147 +18,84 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
+            box-sizing: border-box;
         }
 
         #game-container {
             width: 100%;
-            max-width: 700px;
+            max-width: 600px;
             background: var(--container-bg);
-            padding: 40px;
-            border-radius: 20px;
+            padding: 25px;
+            border-radius: 15px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(255, 60, 60, 0.1);
-            animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         h1 {
             color: var(--accent-color);
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 1.4rem;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
         #text {
-            font-size: 1.15rem;
-            line-height: 1.7;
-            margin-bottom: 35px;
-            min-height: 100px;
-            color: #ccc;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            min-height: 80px;
+            white-space: pre-line;
         }
 
         .buttons {
-            display: grid;
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         button {
             background: #252525;
             color: #fff;
             border: 1px solid var(--border-color);
-            padding: 18px 25px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             text-align: left;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: 0.2s;
+            -webkit-tap-highlight-color: transparent; /* Убирает синюю рамку на смартфонах */
         }
 
-        button:hover {
+        button:hover, button:active {
             background: #333;
             border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(255, 60, 60, 0.3);
-            transform: translateX(5px);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        /* Оформление концовок */
-        .wasted {
             color: var(--accent-color);
-            font-weight: bold;
-            font-size: 2.2rem;
-            text-align: center;
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 60, 60, 0.5);
         }
 
-        .ending {
-            color: #00ffaa;
-            font-weight: bold;
-            font-size: 1.5rem;
-            text-align: center;
-            border: 2px double #00ffaa;
-            padding: 20px;
-            border-radius: 10px;
-            background: rgba(0, 255, 170, 0.05);
-        }
-
-        /* Скроллбар для длинных текстов */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+        .wasted { color: #ff3c3c; font-weight: bold; font-size: 1.5rem; text-align: center; }
+        .ending { color: #00ffaa; font-weight: bold; font-size: 1.2rem; text-align: center; border: 1px dashed #00ffaa; padding: 15px; }
     </style>
 </head>
 <body>
 
 <div id="game-container">
     <h1>академия резистенс</h1>
-    <div id="text"></div>
+    <div id="text">Загрузка...</div>
     <div id="option-buttons" class="buttons"></div>
 </div>
 
 <script>
     const textElement = document.getElementById('text');
     const optionButtonsElement = document.getElementById('option-buttons');
-
-    function startGame() {
-        showTextNode(1);
-    }
-
-    function showTextNode(textNodeId) {
-        const textNode = textNodes.find(node => node.id === textNodeId);
-        
-        // Очищаем и стилизуем контент
-        textElement.innerHTML = '';
-        if (textNode.isWasted) {
-            textElement.innerHTML = <div class="wasted">${textNode.text}</div>;
-        } else if (textNode.isEnding) {
-            textElement.innerHTML = <div class="ending">${textNode.text}</div>;
-[08.04.2026 18:08] сид вишес: } else {
-            textElement.innerText = textNode.text;
-        }
-        
-        while (optionButtonsElement.firstChild) {
-            optionButtonsElement.removeChild(optionButtonsElement.firstChild);
-        }
-
-        textNode.options.forEach(option => {
-            const button = document.createElement('button');
-            button.innerText = option.text;
-            button.onclick = () => {
-                if (option.nextText === -1) return startGame();
-                showTextNode(option.nextText);
-            };
-            optionButtonsElement.appendChild(button);
-        });
-    }
 
     const textNodes = [
         {
@@ -174,32 +111,32 @@
             id: 2,
             text: 'ты не Картер. WASTED',
             isWasted: true,
-            options: [{ text: 'ПОПРОБОВАТЬ ЕЩЕ РАЗ', nextText: -1 }]
+            options: [{ text: 'ПОПРОБОВАТЬ ЕЩЕ РАЗ', nextText: 1 }]
         },
         {
             id: 3,
-            text: 'Ты успешно избежала столкновение с Дином! Ты слышишь, как трещит деревянная дверь. Кажется, Сабрине не поздоровится… Вдруг из-за угла вылетает явно ошарашенная Марселин. Увидев тебя, она приняла обычный сучий вид. «Ты новенькая? Нищета,» — говорит она. Что ты ответишь?',
+            text: 'Ты успешно избежала столкновение с Дином! Вдруг из-за угла вылетает Марселин. «Ты новенькая? Нищета,» — говорит она.',
             options: [
                 { text: '«твоя мама мертвая шлюха»', nextText: 5 },
-                { text: '«да, новенькая! меня зовут аделина, приятно познакомиться!»', nextText: 6 },
+                { text: '«да, новенькая! меня зовут аделина»', nextText: 6 },
                 { text: '«я не из нищеебов, ты что-то путаешь»', nextText: 7 }
             ]
         },
         {
             id: 4,
-            text: 'Дин выбил тебе мозги вместе с дверью в комнату Сабрины. Тебе никогда не стать Скарлетт Йохансон. WASTED',
+            text: 'Дин выбил тебе мозги вместе с дверью. Тебе никогда не стать Скарлетт Йохансон. WASTED',
             isWasted: true,
-            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: -1 }]
+  options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: 1 }]
         },
         {
             id: 5,
-            text: 'Марселин взорвалась. Ты вышла на секретную концовку. Тебя мгновенно усыпили, а проснулась ты в комнате, полной соленых огурцов, зеленых оливок, креветок и морковки по-корейски. На огромном экране шел Ла-Ла Ленд. А после него начался настоящий пятый сезон Очень Странных дел, в котором Робин и Нэнси стали каноном.',
+            text: 'Марселин взорвалась. Секретная концовка: комната с огурцами, Ла-Ла Ленд и канон Робин/Нэнси.',
             isEnding: true,
-            options: [{ text: 'ЭТО РАЙ (ИГРАТЬ СНОВА)', nextText: -1 }]
+            options: [{ text: 'ЭТО РАЙ (ИГРАТЬ СНОВА)', nextText: 1 }]
         },
         {
             id: 6,
-            text: 'Марселин смерила тебя высокомерным взглядом. Она хмыкнула и, махнув волосами, ушла, так ничего и не ответив. Куда ты пойдешь дальше?',
+            text: 'Марселин ушла. Куда ты пойдешь дальше?',
             options: [
                 { text: 'сад', nextText: 8 },
                 { text: 'мусорка', nextText: 9 },
@@ -208,7 +145,7 @@
         },
         {
             id: 7,
-            text: '«Ок,» — отвечает Марселин. Ты поражена ее способностям вести конструктивный диалог. Вместо нее вдруг появился Тун Тун Тун Сахур. «Привет! Значит, ты наследница? Пошли за мной!» — говорит он.',
+            text: '«Ок,» — отвечает Марселин. Появился Тун Тун Тун Сахур: «Привет! Значит, ты наследница? Пошли за мной!»',
             options: [
                 { text: '«нет иди на хуй»', nextText: 11 },
                 { text: '«ну го»', nextText: 12 }
@@ -216,7 +153,7 @@
         },
         {
             id: 8,
-            text: 'Ты пришла в сад. Там сидела девчонка с темными черными волосами и плакала. Подойдешь к ней?',
+            text: 'Ты в саду. Там плачет девчонка с черными волосами. Подойдешь?',
             options: [
                 { text: 'да', nextText: 13 },
                 { text: 'нет', nextText: 14 }
@@ -224,43 +161,43 @@
         },
         {
             id: 9,
-            text: 'Ты пришла на мусорку. Атмосфера явно неприятная. Вдруг ты замечаешь торчащие из-за бака ноги и слышишь шорох. «Что ты тут забыла?» — спрашивает Эмма, выскользнув из темноты. — «Лучше беги, иначе я тебя убью, прямо как эту бедняжку.» Что ты ответишь?',
+            text: 'Мусорка. Из-за бака выходит Эмма: «Что ты тут забыла? Беги, или я тебя убью!»',
             options: [
                 { text: '«я директриса вообще-то»', nextText: 18 },
                 { text: '«марселин шлюха»', nextText: 19 },
-[08.04.2026 18:08] сид вишес: { text: '«ты шалава какая-то»', nextText: 20 }
+                { text: '«ты шалава какая-то»', nextText: 20 }
             ]
         },
         {
             id: 10,
-            text: 'В столовой царил хаос. Аселия, занявшая сразу три скамейки, опрокидывала рукой чужие подносы и слизывала с пола еду. Никто не мог ей ничего сказать. Все ее боялись. Ты обязана дать ей отпор! Ты подошла к ней. «Чего тебе?» — прозвучал утробный рык.',
+            text: 'В столовой Аселия слизывает еду с пола. Ты подошла к ней. «Чего тебе?» — рычит она.',
             options: [
-                { text: '«что подумает никлаус, когда увидит тебя?»', nextText: 15 },
+                { text: '«что подумает никлаус?»', nextText: 15 },
                 { text: '«ты пишешь посты через гпт»', nextText: 16 },
-                { text: '«я забираю у тебя права админа. ты больше не второй админ»', nextText: 17 }
+                { text: '«я забираю у тебя права админа»', nextText: 17 }
             ]
         },
         {
             id: 11,
-            text: 'Тун Тун Тун Сахур не привык к такому обращению. Он обиделся и удалил тебя из реальности. WASTED',
+            text: 'Сахур удалил тебя из реальности. WASTED',
             isWasted: true,
-            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: -1 }]
+            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: 1 }]
         },
         {
             id: 12,
-            text: 'Тебе было сказано, не доверяй Сахуру… Ты потеряла сознание и очнулась в темнице. Повсюду были пятна крови. На стене было написано: «Ребят, поступило много жалоб...» Кажется, тебе пришел конец. WASTED',
+            text: 'Зря ты доверилась Сахуру... Ты в темнице, кругом жалобы на некомфортное общение. WASTED',
             isWasted: true,
-            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: -1 }]
+            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: 1 }]
         },
         {
             id: 13,
             text: 'Это была латентная лесбуха Эда. Ты заразилась лесбиянством. WASTED',
             isWasted: true,
-            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: -1 }]
+            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: 1 }]
         },
         {
             id: 14,
-            text: 'Ты не стала подходить к сомнительной личности. Куда пойдешь дальше?',
+            text: 'Ты не стала подходить. Куда дальше?',
             options: [
                 { text: 'столовая', nextText: 10 },
                 { text: 'мусорка', nextText: 9 }
@@ -268,47 +205,73 @@
         },
         {
             id: 15,
-            text: 'Аселия разозлилась, пришлепнула тебя в котлету и съела. WASTED',
+            text: 'Аселия пришлепнула тебя в котлету. WASTED',
             isWasted: true,
-            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: -1 }]
+            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: 1 }]
         },
         {
             id: 16,
-            text: 'Аселия разозлилась, пришлепнула тебя в котлету и съела. WASTED',
+            text: 'Аселия пришлепнула тебя в котлету. WASTED',
             isWasted: true,
-            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: -1 }]
+            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: 1 }]
         },
         {
             id: 17,
-            text: 'Аселия покраснела, глаза выкатились, а после она лопнула. От нее осталась только резина от латексного костюма... Ты крутая девчонка!',
-            options: [{ text: 'отправиться на мусорку', nextText: 9 }]
+            text: 'Аселия лопнула! От нее остался только латекс. Куда теперь?',
+            options: [{ text: 'на мусорку', nextText: 9 }]
         },
         {
             id: 18,
-            text: 'Вы занялись жестким бсдм-сексом. Счастливая концовка, но не каноничная.',
+            text: 'Вы занялись жестким БДСМ. Концовка счастливая, но не каноничная.',
             isEnding: true,
-            options: [{ text: 'ИГРАТЬ СНОВА', nextText: -1 }]
+            options: [{ text: 'ИГРАТЬ СНОВА', nextText: 1 }]
         },
         {
             id: 19,
-            text: '«Ты права. Ну ладно, иди,» — говорит Эмма. Но тебе больше некуда идти! Ну что, к себе в комнату?',
+            text: '«Ты права. Ну ладно, иди,» — говорит Эмма. Пора в комнату?',
             options: [{ text: 'газ к себе в комнату', nextText: 21 }]
         },
         {
             id: 20,
             text: 'Эмма тебя убила. WASTED',
             isWasted: true,
-            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: -1 }]
+            options: [{ text: 'ПОПРОБОВАТЬ СНОВА', nextText: 1 }]
         },
         {
             id: 21,
-            text: 'Ты пришла к себе в комнату. Ты вспомнила чат «арабы»… Кажется, там было что-то интересное в описании. \n\n КАНОНИЧНАЯ КОНЦОВКА',
+            text: 'Ты в комнате. Вспомнила описание чата «арабы».
+ .. КАНОНИЧНАЯ КОНЦОВКА',
             isEnding: true,
-            options: [{ text: 'ПРОЙТИ ЕЩЕ РАЗ', nextText: -1 }]
+            options: [{ text: 'ПРОЙТИ ЕЩЕ РАЗ', nextText: 1 }]
         }
     ];
 
-    startGame();
+    function showTextNode(textNodeId) {
+        const textNode = textNodes.find(node => node.id === textNodeId);
+        textElement.innerHTML = '';
+        
+        if (textNode.isWasted) {
+            textElement.innerHTML = <div class="wasted">${textNode.text}</div>;
+        } else if (textNode.isEnding) {
+            textElement.innerHTML = <div class="ending">${textNode.text}</div>;
+        } else {
+            textElement.innerText = textNode.text;
+        }
+        
+        while (optionButtonsElement.firstChild) {
+            optionButtonsElement.removeChild(optionButtonsElement.firstChild);
+        }
+
+        textNode.options.forEach(option => {
+            const button = document.createElement('button');
+            button.innerText = option.text;
+            button.onclick = () => showTextNode(option.nextText);
+            optionButtonsElement.appendChild(button);
+        });
+    }
+
+    // Запуск игры
+    window.onload = () => showTextNode(1);
 </script>
 </body>
 </html>
